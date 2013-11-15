@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RSOTopQuestionsTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface RSOTopQuestionsTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @end

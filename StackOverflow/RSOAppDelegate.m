@@ -26,11 +26,11 @@
     
     [tabBarController setSelectedViewController:topQuestionsVC];
     
-    [RSOStore startPrepareStore];
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window setRootViewController:tabBarController];
     [self.window makeKeyAndVisible];
+    
+    NSLog(@"Start %@", [NSDate date]);
     return YES;
 }
 

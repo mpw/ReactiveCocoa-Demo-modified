@@ -29,36 +29,25 @@
     return sharedStore;
 }
 
-+ (void)startPrepareStore
-{
-    RSOStore *store = [self sharedStore];
-    
-    [store getTopQuestionsWithCompletion:^(NSArray *topQuestions, NSError *error) {
-        if(!error)
-            store.topQuestions = topQuestions;
-    }];
-}
-
 + (id)allocWithZone:(struct _NSZone *)zone
 {
     return [self sharedStore];
 }
 
-- (void)getTopQuestionsWithCompletion:(void (^) (NSArray *topQuestions, NSError *error))completion
-{
-    [[[RSOWebServices sharedServices] fetchQuestionsWithQuery:nil] subscribeNext:^(NSDictionary *questionDictionary) {
+- (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString {
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString];
+
+    return  [signal map:^(NSDictionary *questionDictionary) {
         NSMutableArray *questions = [[NSMutableArray alloc]init];
         for(id questionDictionaryItem in questionDictionary)
         {
-//            RSOQuestion *question = [RSOQuestion new];
+            //            RSOQuestion *question = [RSOQuestion new];
 //            [question bnrSetValuesForKeysWithJSONDictionary:questionDictionaryItem];
             RSOQuestion *question = [RSOStore dictionaryToQuestion:questionDictionaryItem];
             [questions addObject:question];
         }
-        _topQuestions = [questions copy];
-        
-        if(completion)
-            completion(_topQuestions, nil);
+    
+    return [questions copy];
     }];
 }
 

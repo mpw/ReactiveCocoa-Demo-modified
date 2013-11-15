@@ -6,8 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RSOTopQuestionsTableViewController">
             <connections>
-                <outlet property="searchBox" destination="ZC3-04-dAB" id="oFT-cH-rs6"/>
+                <outlet property="searchBox" destination="ZC3-04-dAB" id="ahC-T7-lS1"/>
                 <outlet property="tableView" destination="4" id="s2w-qP-DMF"/>
+                <outlet property="topLayoutGuideConstraint" destination="cCc-Ve-Sc6" id="bFu-8t-WkD"/>
                 <outlet property="view" destination="6HY-DB-e8H" id="qgx-BH-KlX"/>
             </connections>
         </placeholder>

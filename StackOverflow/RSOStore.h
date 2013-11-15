@@ -12,11 +12,9 @@
 
 @interface RSOStore : NSObject
 
-@property (nonatomic, copy) NSArray *topQuestions;
-
 + (RSOStore*)sharedStore;
 
-+ (void)startPrepareStore;
+- (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString;
 
 - (RACSignal *)getQuestionData:(NSUInteger)questionID;
 

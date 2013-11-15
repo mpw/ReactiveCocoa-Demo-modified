@@ -10,6 +10,7 @@
 
 @implementation RSOQuestion
 //
+//@synthesize postID = question_id;
 //@synthesize text = title;
 //@synthesize answers = answers;
 //@synthesize comments = comments;

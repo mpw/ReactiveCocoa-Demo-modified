@@ -12,10 +12,15 @@
 #import "RSOStore.h"
 #import "RSOQuestion.h"
 #import "RSOQuestionDetailViewController.h"
+#import "RACSignal+Operations.h"
+#import "RSOConstants.h"
 
 @interface RSOTopQuestionsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *searchBox;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property(weak, nonatomic) IBOutlet NSLayoutConstraint *topLayoutGuideConstraint;
+@property (nonatomic, copy) NSArray *topQuestions;
+@property (nonatomic, copy)NSArray *filteredTopQuestions;
 
 @end
 
@@ -36,17 +41,36 @@
     
     if([self respondsToSelector:@selector(topLayoutGuide)])
     {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.topLayoutGuideConstraint.constant = 20;
     }
 
     // Uncomment the following line to preserve selection between presentations.
+    self.searchBox.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    [RACObserve([RSOStore sharedStore], topQuestions) subscribeNext:^(NSArray *questions) {
+    [[[self.searchBox.rac_textSignal throttle:RSOConstantsSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
+        //Update Top questions table
+        if(queryString && ![queryString isEqualToString:@""])
+        {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", queryString];
+            self.filteredTopQuestions = [self.topQuestions filteredArrayUsingPredicate:predicate];
+        }
+        else
+        {
+            self.filteredTopQuestions = [self.topQuestions copy];
+        }
+        [self.tableView reloadData];
+    }];
+    
+    RSOStore *sharedStore = [RSOStore sharedStore] ;
+    RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
+    [topQuestionsSignal subscribeNext:^(NSArray *questions) {
+        self.topQuestions = questions;
+        self.filteredTopQuestions = [questions copy];
         [self.tableView reloadData];
     }];
 }
@@ -68,7 +92,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [[RSOStore sharedStore].topQuestions count];
+    if([self.filteredTopQuestions count])
+        return [self.filteredTopQuestions count];
+    else
+        return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,8 +107,13 @@
     }
     
     // Configure the cell...
-    RSOQuestion *question = [[RSOStore sharedStore].topQuestions objectAtIndex:indexPath.row];
-    cell.textLabel.text = question.text;
+    if([self.filteredTopQuestions count])
+    {
+        RSOQuestion *question = [self.filteredTopQuestions objectAtIndex:indexPath.row];
+        cell.textLabel.text = question.text;
+    }
+    
+    NSLog(@"Created Cell - %d, %@", indexPath.row, [NSDate date]);
     
     return cell;
 }
@@ -132,13 +164,19 @@
 {
     // Navigation logic may go here, for example:
     // Create the next view controller.
-    RSOQuestion *question = [[RSOStore sharedStore].topQuestions objectAtIndex:indexPath.row];
+    RSOQuestion *question = [self.topQuestions objectAtIndex:indexPath.row];
     RSOQuestionDetailViewController *detailViewController = [[RSOQuestionDetailViewController alloc] initWithQuestion:question];
 
     // Pass the selected object to the new view controller.
     
     // Push the view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
+}
+
+#pragma mark - textfield delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    return [self.searchBox resignFirstResponder];
 }
 
 @end
