@@ -64,8 +64,13 @@
     }];
     
     RSOStore *sharedStore = [RSOStore sharedStore] ;
+    
+    //Running reloadData on table from background thread causes substantial latency to loading table cells
+    //so use mainThreadScheduler to run the update on the main UI thread
     RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
-    [topQuestionsSignal subscribeNext:^(NSArray *questions) {
+    [[topQuestionsSignal
+      deliverOn:RACScheduler.mainThreadScheduler]
+     subscribeNext:^(NSArray *questions) {
         self.topQuestions = questions;
         self.filteredTopQuestions = [questions copy];
         [self.tableView reloadData];
