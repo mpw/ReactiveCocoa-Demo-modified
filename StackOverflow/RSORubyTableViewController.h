@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RSOQuestionsViewController.h"
 
-@interface RSORubyTableViewController : UITableViewController
+@interface RSORubyTableViewController : RSOQuestionsViewController
 
 @end

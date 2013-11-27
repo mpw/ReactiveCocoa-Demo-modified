@@ -43,11 +43,16 @@ NSString *const RSOWebServicesSortType = @"hot";
     return [self sharedServices];
 }
 
-- (RACSignal *)fetchQuestionsWithQuery:(NSString *)query
+- (RACSignal *)fetchQuestionsWithQuery:(NSString *)query tag:(NSString *)tag
 {
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        NSString *relativeUrl = [NSString stringWithFormat:@"questions/?site=%@&order=%@&sort=%@", self.baseSite, RSOWebServicesSort, RSOWebServicesSortType];
+        NSMutableString *relativeUrl = [[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"questions/?site=%@&order=%@&sort=%@", self.baseSite, RSOWebServicesSort, RSOWebServicesSortType]];
+        
+        if(tag)
+            [relativeUrl appendFormat:@"&tagged=%@", tag];
+        
+        
         NSURL  *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             

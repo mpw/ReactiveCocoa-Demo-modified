@@ -17,7 +17,7 @@
 
 + (RSOWebServices *) sharedServices;
 
-- (RACSignal *)fetchQuestionsWithQuery:(NSString *)query;
+- (RACSignal *)fetchQuestionsWithQuery:(NSString *)query tag:(NSString *)tag;
 
 - (RACSignal *)fetchQuestionWithID:(NSUInteger)questionID;
 
