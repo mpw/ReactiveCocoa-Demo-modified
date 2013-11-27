@@ -10,6 +10,6 @@
 
 @implementation RSOPost
 
-@synthesize postID = question_id;
+//@synthesize postID = question_id;
 
 @end

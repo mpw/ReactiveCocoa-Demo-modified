@@ -26,8 +26,11 @@
     
     [tabBarController setSelectedViewController:topQuestionsVC];
     
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:tabBarController];
+    
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window setRootViewController:tabBarController];
+    [self.window setRootViewController:navController];
     [self.window makeKeyAndVisible];
     
     NSLog(@"Start %@", [NSDate date]);

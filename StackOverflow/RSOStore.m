@@ -37,7 +37,7 @@
 - (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString {
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString];
 
-    return  [signal map:^(NSDictionary *questionDictionary) {
+    return  [signal map:^(NSArray *questionDictionary) {
         NSMutableArray *questions = [[NSMutableArray alloc]init];
         for(id questionDictionaryItem in questionDictionary)
         {
@@ -53,25 +53,31 @@
 
 - (RACSignal *)getQuestionData:(NSUInteger)questionID
 {
-    return [[[RSOWebServices sharedServices] fetchQuestionWithID:questionID] map:^(NSDictionary *questionDictionary) {
-        return [RSOStore dictionaryToQuestion:questionDictionary];
+    return [[[RSOWebServices sharedServices] fetchQuestionWithID:questionID] map:^(NSArray *questionDictionary) {
+        return [RSOStore dictionaryToQuestion:[questionDictionary objectAtIndex:0]];
     }];
 }
 
 + (RSOQuestion *)dictionaryToQuestion:(NSDictionary *)questionDictionary
 {
+    if(!questionDictionary)
+        return nil;
+    
     RSOQuestion *question = [RSOQuestion new];
-    question.postID = (NSUInteger)questionDictionary[@"id"];
+    NSNumber *questionID = questionDictionary[@"question_id"];
+    question.postID = [questionID longValue];
     question.text = questionDictionary[@"title"];
     question.owner = [RSOStore dictionaryToOwner:questionDictionary[@"owner"]];
     
     NSMutableArray *answers = [[NSMutableArray alloc ]init];
     for (NSDictionary *answerDictionaryItem in questionDictionary[@"answers"])
     {
-        [answers addObject:[RSOStore dictionaryToAnswer:answerDictionaryItem]];
+        RSOAnswer *answer = [RSOStore dictionaryToAnswer:answerDictionaryItem];
+        answer.question = question;
+        [answers addObject:answer];
     }
     
-//    question.answers = [answers copy];
+    question.answers = [answers copy];
     
     return question;
 }
@@ -79,8 +85,10 @@
 + (RSOAnswer *)dictionaryToAnswer:(NSDictionary *)answerDictionary
 {
     RSOAnswer *answer = [RSOAnswer new];
-    answer.postID = (NSUInteger)answerDictionary[@"id"];
+    NSNumber *answerID = answerDictionary[@"answer_id"];
+    answer.postID = [answerID longValue];
     answer.text = answerDictionary[@"body"];
+    answer.owner = [RSOStore dictionaryToOwner:answerDictionary[@"owner"]];
     return answer;
 }
 

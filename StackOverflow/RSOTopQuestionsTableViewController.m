@@ -14,6 +14,7 @@
 #import "RSOQuestionDetailViewController.h"
 #import "RACSignal+Operations.h"
 #import "RSOConstants.h"
+#import "RACScheduler.h"
 
 @interface RSOTopQuestionsTableViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *searchBox;
@@ -43,14 +44,10 @@
     {
         self.topLayoutGuideConstraint.constant = 20;
     }
-
-    // Uncomment the following line to preserve selection between presentations.
+    
     self.searchBox.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [[[self.searchBox.rac_textSignal throttle:RSOConstantsSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
         //Update Top questions table
@@ -170,7 +167,7 @@
     // Pass the selected object to the new view controller.
     
     // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    [self.tabBarController.navigationController pushViewController:detailViewController animated:YES];
 }
 
 #pragma mark - textfield delegate

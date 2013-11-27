@@ -13,6 +13,8 @@
 
 NSString *const RSOWebServicesBodyFilter = @"body";
 NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
+NSString *const RSOWebServicesSort = @"desc";
+NSString *const RSOWebServicesSortType = @"hot";
 
 @interface RSOWebServices ()
 @property (nonatomic, copy) NSURL *baseUrl;
@@ -45,7 +47,7 @@ NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
 {
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         
-        NSString *relativeUrl = [NSString stringWithFormat:@"questions/?site=%@", self.baseSite];
+        NSString *relativeUrl = [NSString stringWithFormat:@"questions/?site=%@&order=%@&sort=%@", self.baseSite, RSOWebServicesSort, RSOWebServicesSortType];
         NSURL  *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             
@@ -66,7 +68,7 @@ NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
 - (RACSignal *)fetchQuestionWithID:(NSUInteger)questionID
 {
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *relativeUrl = [NSString stringWithFormat:@"questions/%d/?site=%@&filters=%@", questionID, self.baseSite, RSOWebServicesBodyANDAnswersFilter];
+        NSString *relativeUrl = [NSString stringWithFormat:@"questions/%d/?site=%@&filter=%@", questionID, self.baseSite, RSOWebServicesBodyANDAnswersFilter];
         NSURL *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             
