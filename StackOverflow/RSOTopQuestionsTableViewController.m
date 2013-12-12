@@ -15,50 +15,41 @@
 #import "RACSignal+Operations.h"
 #import "RSOConstants.h"
 #import "RACScheduler.h"
+#import "RSOQuestionCell.h"
 
 @interface RSOTopQuestionsTableViewController ()
-@property (weak, nonatomic) IBOutlet UITextField *searchBox;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property(weak, nonatomic) IBOutlet NSLayoutConstraint *topLayoutGuideConstraint;
-@property (nonatomic, copy) NSArray *topQuestions;
+@property (strong, nonatomic) UITextField *searchBox;
 @property (nonatomic, copy)NSArray *filteredTopQuestions;
 
 @end
 
 @implementation RSOTopQuestionsTableViewController
 
-- (id)init{
-    self = [super init];
-    if(self)
-    {
-        self.tabBarItem.title = @"Top Questions";
-    }
-    return self;
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    NSLog(@"%f %f", [self.topLayoutGuide length], [self.bottomLayoutGuide length]);
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    if([self respondsToSelector:@selector(topLayoutGuide)])
-    {
-        self.topLayoutGuideConstraint.constant = 20;
-    }
-    
+    self.searchBox = [[UITextField alloc] initWithFrame:CGRectMake(20, 5, 280, 30)];
+    self.searchBox.placeholder = @"Search";
+    [self.searchBox setBorderStyle:UITextBorderStyleRoundedRect];
     self.searchBox.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
     
     [[[self.searchBox.rac_textSignal throttle:RSOConstantsSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
         //Update Top questions table
         if(queryString && ![queryString isEqualToString:@""])
         {
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", queryString];
-            self.filteredTopQuestions = [self.topQuestions filteredArrayUsingPredicate:predicate];
+            self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
         }
         else
         {
-            self.filteredTopQuestions = [self.topQuestions copy];
+            self.filteredTopQuestions = [self.questions copy];
         }
         [self.tableView reloadData];
     }];
@@ -71,7 +62,7 @@
     [[topQuestionsSignal
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(NSArray *questions) {
-        self.topQuestions = questions;
+        self.questions = questions;
         self.filteredTopQuestions = [questions copy];
         [self.tableView reloadData];
     }];
@@ -100,20 +91,31 @@
         return 0;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+    [view setBackgroundColor:[UIColor whiteColor]];
+    [view addSubview:self.searchBox];
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 40;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 95;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    // Configure the cell...
-    if([self.filteredTopQuestions count])
-    {
-        RSOQuestion *question = [self.filteredTopQuestions objectAtIndex:indexPath.row];
-        cell.textLabel.text = question.text;
-    }
+    RSOQuestion *question = [self.filteredTopQuestions objectAtIndex:indexPath.row];
+    cell.questionTextLabel.text = question.text;
+    cell.userTextLabel.text = question.owner.screenName;
     
     return cell;
 }
@@ -125,13 +127,11 @@
 {
     // Navigation logic may go here, for example:
     // Create the next view controller.
-    RSOQuestion *question = [self.topQuestions objectAtIndex:indexPath.row];
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
     RSOQuestionDetailViewController *detailViewController = [[RSOQuestionDetailViewController alloc] initWithQuestion:question];
-
-    // Pass the selected object to the new view controller.
     
     // Push the view controller.
-    [self.tabBarController.navigationController pushViewController:detailViewController animated:YES];
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 #pragma mark - textfield delegate

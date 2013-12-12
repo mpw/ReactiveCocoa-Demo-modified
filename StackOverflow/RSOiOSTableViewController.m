@@ -9,32 +9,13 @@
 #import "RSOiOSTableViewController.h"
 #import "RSOStore.h"
 #import "RSOQuestion.h"
-
-@interface RSOiOSTableViewController ()
-@property (nonatomic) NSLayoutConstraint *topLayoutGuideConstraint;
-
-@end
+#import "RSOQuestionCell.h"
 
 @implementation RSOiOSTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-        self.tabBarItem.title = @"iOS";
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    if([self respondsToSelector:@selector(topLayoutGuide)])
-    {
-        self.topLayoutGuideConstraint.constant = 20;
-    }
     
     [[[[RSOStore sharedStore] getTopiOSQuestionsWithQuery:nil]
       deliverOn:RACScheduler.mainThreadScheduler]
@@ -66,16 +47,18 @@
     return [self.questions count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 95;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
-    cell.textLabel.text = question.text;
+    cell.questionTextLabel.text = question.text;
+    cell.userTextLabel.text = question.owner.screenName;
     
     return cell;
 }

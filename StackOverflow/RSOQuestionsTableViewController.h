@@ -1,5 +1,5 @@
 //
-//  RSOQuestionsViewController.h
+//  RSOQuestionsTableViewController.h
 //  StackOverflow
 //
 //  Created by Howard Vining on 11/27/13.
@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RSOQuestionsViewController : UITableViewController
+extern NSString *const cellIdentifier;
+
+@interface RSOQuestionsTableViewController : UITableViewController
 @property (nonatomic) NSArray *questions;
-@property (nonatomic) IBOutlet NSLayoutConstraint *topLayoutGuide;
 
 @end

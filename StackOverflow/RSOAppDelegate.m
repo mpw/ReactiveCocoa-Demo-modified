@@ -16,21 +16,32 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     RSOAndroidTableViewController *androidVC = [[RSOAndroidTableViewController alloc] init];
+    UINavigationController *androidNC = [[UINavigationController alloc] initWithRootViewController:androidVC];
+    androidNC.tabBarItem.title = @"Android";
+    
     RSOiOSTableViewController *iOSVC = [[RSOiOSTableViewController alloc] init];
+    UINavigationController *iOSNC = [[UINavigationController alloc] initWithRootViewController:iOSVC];
+    iOSNC.tabBarItem.title = @"iOS";
+    
     RSOWindowsTableViewController *windowsVC = [[RSOWindowsTableViewController alloc] init];
+    UINavigationController *windowsNC = [[UINavigationController alloc] initWithRootViewController:windowsVC];
+    windowsNC.tabBarItem.title = @"Windows";
+    
     RSORubyTableViewController *rubyVC = [[RSORubyTableViewController alloc] init];
+    UINavigationController *rubyNC = [[UINavigationController alloc] initWithRootViewController:rubyVC];
+    rubyNC.tabBarItem.title = @"Ruby";
+    
     RSOTopQuestionsTableViewController *topQuestionsVC = [[RSOTopQuestionsTableViewController alloc]init];
+    UINavigationController *topQuestionsNC = [[UINavigationController alloc] initWithRootViewController:topQuestionsVC];
+    topQuestionsNC.tabBarItem.title = @"Top Questions";
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
-    [tabBarController setViewControllers:@[androidVC, iOSVC, topQuestionsVC, rubyVC, windowsVC]];
+    [tabBarController setViewControllers:@[androidNC, iOSNC, topQuestionsNC, rubyNC, windowsNC]];
     
-    [tabBarController setSelectedViewController:topQuestionsVC];
-    
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:tabBarController];
+    [tabBarController setSelectedViewController:topQuestionsNC];
     
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window setRootViewController:navController];
+    [self.window setRootViewController:tabBarController];
     [self.window makeKeyAndVisible];
     
     NSLog(@"Start %@", [NSDate date]);

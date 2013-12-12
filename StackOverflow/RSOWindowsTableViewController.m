@@ -9,22 +9,13 @@
 #import "RSOWindowsTableViewController.h"
 #import "RSOStore.h"
 #import "RSOQuestion.h"
+#import "RSOQuestionCell.h"
 
 @interface RSOWindowsTableViewController ()
 
 @end
 
 @implementation RSOWindowsTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-        self.tabBarItem.title = @"Windows";
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -63,21 +54,18 @@
     return [self.questions count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 95;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    // Configure the cell...
-    
-    if(self.questions)
-    {
-        RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
-        cell.textLabel.text = question.text;
-    }
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
+    cell.questionTextLabel.text = question.text;
+    cell.userTextLabel.text = question.owner.screenName;
     
     return cell;
 }

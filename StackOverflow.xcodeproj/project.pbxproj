@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9BBAF84A18469F3300570C14 /* RSOQuestionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBAF84818469F3300570C14 /* RSOQuestionsViewController.m */; };
+		9BA6132D185A389B00367D43 /* RSOQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA6132C185A389B00367D43 /* RSOQuestionCell.m */; };
+		9BA6132F185A38AC00367D43 /* RSOQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BA6132E185A38AC00367D43 /* RSOQuestionCell.xib */; };
+		9BBAF8541846B6E200570C14 /* RSOQuestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBAF8531846B6E200570C14 /* RSOQuestionsTableViewController.m */; };
 		9BBD78C218318A4C00C4F28C /* NSObject+setValuesForKeysWithJSONDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBD78C118318A4C00C4F28C /* NSObject+setValuesForKeysWithJSONDictionary.m */; };
 		9BBD78CA183409A200C4F28C /* RSOQuestionDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBD78C8183409A200C4F28C /* RSOQuestionDetailViewController.m */; };
 		9BBD78CB183409A200C4F28C /* RSOQuestionDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BBD78C9183409A200C4F28C /* RSOQuestionDetailViewController.xib */; };
@@ -55,8 +57,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9BBAF84718469F3300570C14 /* RSOQuestionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSOQuestionsViewController.h; sourceTree = "<group>"; };
-		9BBAF84818469F3300570C14 /* RSOQuestionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSOQuestionsViewController.m; sourceTree = "<group>"; };
+		9BA6132B185A389B00367D43 /* RSOQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSOQuestionCell.h; sourceTree = "<group>"; };
+		9BA6132C185A389B00367D43 /* RSOQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSOQuestionCell.m; sourceTree = "<group>"; };
+		9BA6132E185A38AC00367D43 /* RSOQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RSOQuestionCell.xib; sourceTree = "<group>"; };
+		9BBAF8521846B6E200570C14 /* RSOQuestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSOQuestionsTableViewController.h; sourceTree = "<group>"; };
+		9BBAF8531846B6E200570C14 /* RSOQuestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSOQuestionsTableViewController.m; sourceTree = "<group>"; };
 		9BBD78C118318A4C00C4F28C /* NSObject+setValuesForKeysWithJSONDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+setValuesForKeysWithJSONDictionary.m"; sourceTree = "<group>"; };
 		9BBD78C318318A5C00C4F28C /* NSObject+setValuesForKeysWithJSONDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+setValuesForKeysWithJSONDictionary.h"; sourceTree = "<group>"; };
 		9BBD78C7183409A100C4F28C /* RSOQuestionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSOQuestionDetailViewController.h; sourceTree = "<group>"; };
@@ -138,6 +143,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9BBAF84C1846ADB500570C14 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				9BA6132B185A389B00367D43 /* RSOQuestionCell.h */,
+				9BA6132C185A389B00367D43 /* RSOQuestionCell.m */,
+				9BA6132E185A38AC00367D43 /* RSOQuestionCell.xib */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		9BBD78BC1831899700C4F28C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +243,7 @@
 		9BC3217D18218F7200AB5D7B /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				9BBAF84C1846ADB500570C14 /* Cells */,
 				9BC321931821A8D100AB5D7B /* RSOWindowsTableViewController.h */,
 				9BC321941821A8D100AB5D7B /* RSOWindowsTableViewController.m */,
 				9BC321951821A8D100AB5D7B /* RSOWindowsTableViewController.xib */,
@@ -246,8 +262,8 @@
 				9BBD78C7183409A100C4F28C /* RSOQuestionDetailViewController.h */,
 				9BBD78C8183409A200C4F28C /* RSOQuestionDetailViewController.m */,
 				9BBD78C9183409A200C4F28C /* RSOQuestionDetailViewController.xib */,
-				9BBAF84718469F3300570C14 /* RSOQuestionsViewController.h */,
-				9BBAF84818469F3300570C14 /* RSOQuestionsViewController.m */,
+				9BBAF8521846B6E200570C14 /* RSOQuestionsTableViewController.h */,
+				9BBAF8531846B6E200570C14 /* RSOQuestionsTableViewController.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -364,6 +380,7 @@
 				9BC321971821A8D100AB5D7B /* RSOWindowsTableViewController.xib in Resources */,
 				9BC321A61821A90800AB5D7B /* RSORubyTableViewController.xib in Resources */,
 				9BC3215418218BAF00AB5D7B /* InfoPlist.strings in Resources */,
+				9BA6132F185A38AC00367D43 /* RSOQuestionCell.xib in Resources */,
 				9BC3215C18218BAF00AB5D7B /* Images.xcassets in Resources */,
 				9BC321A11821A8F100AB5D7B /* RSOAndroidTableViewController.xib in Resources */,
 			);
@@ -422,12 +439,13 @@
 				9BC321C01822F40000AB5D7B /* RSOPost.m in Sources */,
 				9BC321B81821B24900AB5D7B /* RSOOwner.m in Sources */,
 				9BC321C61822F73200AB5D7B /* RSOQuestion.m in Sources */,
+				9BBAF8541846B6E200570C14 /* RSOQuestionsTableViewController.m in Sources */,
 				9BC321C91822F87500AB5D7B /* RSOStore.m in Sources */,
 				9BC321B21821ADE300AB5D7B /* RSOAnswer.m in Sources */,
-				9BBAF84A18469F3300570C14 /* RSOQuestionsViewController.m in Sources */,
 				9BC321A01821A8F100AB5D7B /* RSOAndroidTableViewController.m in Sources */,
 				9BC3219B1821A8E200AB5D7B /* RSOiOSTableViewController.m in Sources */,
 				9BBD78C218318A4C00C4F28C /* NSObject+setValuesForKeysWithJSONDictionary.m in Sources */,
+				9BA6132D185A389B00367D43 /* RSOQuestionCell.m in Sources */,
 				9BC3215618218BAF00AB5D7B /* main.m in Sources */,
 				9BC3215A18218BAF00AB5D7B /* RSOAppDelegate.m in Sources */,
 				9BC321A51821A90800AB5D7B /* RSORubyTableViewController.m in Sources */,
