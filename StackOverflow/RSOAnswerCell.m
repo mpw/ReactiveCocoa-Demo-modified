@@ -1,14 +1,15 @@
 //
-//  RSOQuestionCell.m
+//  RSOAnswerCell.m
 //  StackOverflow
 //
-//  Created by Howard Vining on 12/12/13.
+//  Created by Howard Vining on 12/30/13.
 //  Copyright (c) 2013 Big Nerd Ranch. All rights reserved.
 //
 
-#import "RSOQuestionCell.h"
+#import "RSOAnswerCell.h"
+#import "RTLabel.h"
 
-@implementation RSOQuestionCell
+@implementation RSOAnswerCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -26,14 +27,16 @@
     // Configure the view for the selected state
 }
 
-- (CGFloat) minimumHeightForCell:(NSString *)question
+- (CGFloat) minimumHeightForCell:(NSString *)answer
 {
-    CGSize size = [question sizeWithAttributes:@{NSFontAttributeName: self.questionTextLabel.font}];
-    CGFloat labelWidth = self.questionTextLabel.frame.size.width;
+    [self.answerTextLabel setText:answer];
+    NSString *refinedAnswerText = self.answerTextLabel.text;
+    CGSize size = [refinedAnswerText sizeWithAttributes:@{NSFontAttributeName: self.answerTextLabel.font}];
+    CGFloat labelWidth = self.answerTextLabel.frame.size.width;
     CGFloat actualHeight = size.height * ceil(size.width/ labelWidth);
     
     //Add some
-    actualHeight += self.userTextLabel.frame.size.height + 53; // 53 for the 2 vertical spacing constraints and bottom space below the content view
+    actualHeight += 20; // 20 for the vertical spacing constraint
     
     return actualHeight < 95 ? 95 : actualHeight ;
 }

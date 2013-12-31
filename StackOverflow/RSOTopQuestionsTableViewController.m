@@ -16,6 +16,7 @@
 #import "RSOConstants.h"
 #import "RACScheduler.h"
 #import "RSOQuestionCell.h"
+#import "MBProgressHUD.h"
 
 @interface RSOTopQuestionsTableViewController ()
 @property (strong, nonatomic) UITextField *searchBox;
@@ -28,7 +29,6 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    NSLog(@"%f %f", [self.topLayoutGuide length], [self.bottomLayoutGuide length]);
 }
 
 - (void)viewDidLoad
@@ -58,6 +58,14 @@
     
     //Running reloadData on table from background thread causes substantial latency to loading table cells
     //so use mainThreadScheduler to run the update on the main UI thread
+    
+    MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressOverlay.mode = MBProgressHUDModeIndeterminate;
+    progressOverlay.labelText = @"Downloading Hot Questions";
+    progressOverlay.dimBackground = YES;
+    progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
+    [progressOverlay show:YES];
+    
     RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
     [[topQuestionsSignal
       deliverOn:RACScheduler.mainThreadScheduler]
@@ -65,6 +73,8 @@
         self.questions = questions;
         self.filteredTopQuestions = [questions copy];
         [self.tableView reloadData];
+         
+         [progressOverlay hide:YES afterDelay:1];
     }];
 }
 
@@ -106,12 +116,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 95;
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
+    CGFloat height = [cell minimumHeightForCell:question.text];
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
     RSOQuestion *question = [self.filteredTopQuestions objectAtIndex:indexPath.row];
     cell.questionTextLabel.text = question.text;

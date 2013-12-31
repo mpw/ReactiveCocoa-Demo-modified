@@ -10,6 +10,8 @@
 #import "RSOStore.h"
 #import "RSOQuestion.h"
 #import "RSOQuestionCell.h"
+#import "RSOQuestionDetailViewController.h"
+#import "MBProgressHUD.h"
 
 @implementation RSOiOSTableViewController
 
@@ -17,11 +19,20 @@
 {
     [super viewDidLoad];
     
+    MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressOverlay.mode = MBProgressHUDModeIndeterminate;
+    progressOverlay.labelText = @"Downloading iOS Questions";
+    progressOverlay.dimBackground = YES;
+    progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
+    [progressOverlay show:YES];
+    
     [[[[RSOStore sharedStore] getTopiOSQuestionsWithQuery:nil]
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(NSArray *questions) {
          self.questions = [questions copy];
          [self.tableView reloadData];
+         
+         [progressOverlay hide:YES];
      }];
 }
 
@@ -49,18 +60,34 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 95;
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
+    CGFloat height = [cell minimumHeightForCell:question.text];
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
     RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
     cell.questionTextLabel.text = question.text;
     cell.userTextLabel.text = question.owner.screenName;
     
     return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here, for example:
+    // Create the next view controller.
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
+    RSOQuestionDetailViewController *detailViewController = [[RSOQuestionDetailViewController alloc] initWithQuestion:question];
+    
+    // Push the view controller.
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 @end

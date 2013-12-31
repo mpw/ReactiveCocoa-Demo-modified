@@ -10,6 +10,8 @@
 #import "RSOStore.h"
 #import "RSOQuestion.h"
 #import "RSOQuestionCell.h"
+#import "RSOQuestionDetailViewController.h"
+#import "MBProgressHUD.h"
 
 @interface RSOWindowsTableViewController ()
 
@@ -21,15 +23,20 @@
 {
     [super viewDidLoad];
     
-    if([self respondsToSelector:@selector(topLayoutGuide)])
-    {
-    }
+    MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressOverlay.mode = MBProgressHUDModeIndeterminate;
+    progressOverlay.labelText = @"Downloading Windows Questions";
+    progressOverlay.dimBackground = YES;
+    progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
+    [progressOverlay show:YES];
     
     [[[[RSOStore sharedStore] getTopWindowsQuestionsWithQuery:nil]
     deliverOn:RACScheduler.mainThreadScheduler]
     subscribeNext:^(NSArray *questions) {
         self.questions = [questions copy];
         [self.tableView reloadData];
+        
+        [progressOverlay hide:YES];
     }];
 }
 
@@ -56,12 +63,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 95;
+#warning: Ask why RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath]; is configuring the cell in the tableView thus calling heightForRowAtIndexPath in an infinite loop.
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
+    CGFloat height = [cell minimumHeightForCell:question.text];
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
     RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
     cell.questionTextLabel.text = question.text;
@@ -70,7 +81,7 @@
     return cell;
 }
 
-/*
+
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
@@ -78,14 +89,11 @@
 {
     // Navigation logic may go here, for example:
     // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-
-    // Pass the selected object to the new view controller.
+    RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
+    RSOQuestionDetailViewController *detailViewController = [[RSOQuestionDetailViewController alloc] initWithQuestion:question];
     
     // Push the view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
- 
- */
 
 @end

@@ -12,4 +12,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *questionTextLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userTextLabel;
 
+- (CGFloat)minimumHeightForCell:(NSString *)question;
+
 @end

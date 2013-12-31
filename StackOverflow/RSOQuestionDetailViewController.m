@@ -9,14 +9,15 @@
 #import "RSOQuestionDetailViewController.h"
 #import "RSOQuestion.h"
 #import "RSOAnswer.h"
+#import "RSOOwner.h"
 #import "RSOStore.h"
 #import "ReactiveCocoa.h"
+#import "RSOQuestionCell.h"
+#import "RSOAnswerCell.h"
+#import "RTLabel.h"
 
-typedef NS_ENUM(int16_t, RSOQuestionDetailRowType)
-{
-    RSOQuestionDetailQuestionRowType = 0,
-    RSOQuestionDetailAnswer
-};
+static NSString *const answerCellIdentifier = @"RSOAnswerCellIdentifier";
+static NSString *const questionCellIdentifier = @"RSOQuestionCellIdentifier";
 
 @interface RSOQuestionDetailViewController ()
 @property (strong, nonatomic) RSOQuestion *question;
@@ -46,6 +47,13 @@ typedef NS_ENUM(int16_t, RSOQuestionDetailRowType)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UINib *questionCellNib = [UINib nibWithNibName:@"RSOQuestionCell" bundle:nil];
+    [self.tableView registerNib:questionCellNib forCellReuseIdentifier:questionCellIdentifier];
+    
+    UINib *answerCellNib = [UINib nibWithNibName:@"RSOAnswerCell" bundle:nil];
+    [self.tableView registerNib:answerCellNib forCellReuseIdentifier:answerCellIdentifier];
+    
     [self.tableView setAllowsSelection:NO];
     [[[RSOStore sharedStore] getQuestionData:self.question.postID] subscribeNext:^(RSOQuestion *question) {
         self.question.answers = question.answers;
@@ -61,12 +69,29 @@ typedef NS_ENUM(int16_t, RSOQuestionDetailRowType)
 
 #pragma mark - Table view data source
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(indexPath.row == RSOQuestionDetailQuestionRowType)
-        return 100;
+    RSOQuestionCell *questionCell = (RSOQuestionCell *)[self.tableView dequeueReusableCellWithIdentifier:questionCellIdentifier];
+    CGFloat height = [questionCell minimumHeightForCell:self.question.text];
+    return height;
+}
 
-    return 60;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    
+    RSOQuestionCell *questionCell = (RSOQuestionCell *)[self.tableView dequeueReusableCellWithIdentifier:questionCellIdentifier];
+    [questionCell.questionTextLabel setText:self.question.text];
+    [questionCell.userTextLabel setText:self.question.owner.screenName];
+    [questionCell setBackgroundColor:[UIColor whiteColor]];
+    return questionCell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RSOAnswerCell *answerCell = [self.tableView dequeueReusableCellWithIdentifier:answerCellIdentifier];
+    RSOAnswer *answer = [self.question.answers objectAtIndex:indexPath.row];
+    CGFloat height = [answerCell minimumHeightForCell:answer.text];
+    return height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -79,31 +104,17 @@ typedef NS_ENUM(int16_t, RSOQuestionDetailRowType)
 {
     // Return the number of rows in the section.
     if(!self.question.answers)
-        return 1;
+        return 0;
     
-    return [self.question.answers count] + 1;
+    return [self.question.answers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    // Configure the cell...
-    if(indexPath.row == RSOQuestionDetailQuestionRowType)
-    {
-        cell.textLabel.text = self.question.text;
-    }else
-    {
-        RSOAnswer *answer = [self.question.answers objectAtIndex:indexPath.row -1];
-        cell.textLabel.text = answer.text;
-    }
-    
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    return cell;
+    RSOAnswer *answer = [self.question.answers objectAtIndex:indexPath.row];
+    RSOAnswerCell *answerCell = (RSOAnswerCell *)[self.tableView dequeueReusableCellWithIdentifier:answerCellIdentifier forIndexPath:indexPath];
+    [answerCell.answerTextLabel setText:answer.text];
+    return answerCell;
 }
 
 @end

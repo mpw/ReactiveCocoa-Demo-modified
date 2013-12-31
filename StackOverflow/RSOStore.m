@@ -12,6 +12,7 @@
 #import "RSOQuestion.h"
 #import "RSOComment.h"
 #import "NSObject+setValuesForKeysWithJSONDictionary.h"
+#import "NSString+RSOHtmlDecodeAdditions.h"
 
 @interface RSOStore ()
 @end
@@ -99,7 +100,7 @@
     RSOQuestion *question = [RSOQuestion new];
     NSNumber *questionID = questionDictionary[@"question_id"];
     question.postID = [questionID longValue];
-    question.text = questionDictionary[@"title"];
+    question.text = [questionDictionary[@"title"] rso_decodedStringForHtml];
     question.owner = [RSOStore dictionaryToOwner:questionDictionary[@"owner"]];
     
     NSMutableArray *answers = [[NSMutableArray alloc ]init];
@@ -120,7 +121,7 @@
     RSOAnswer *answer = [RSOAnswer new];
     NSNumber *answerID = answerDictionary[@"answer_id"];
     answer.postID = [answerID longValue];
-    answer.text = answerDictionary[@"body"];
+    answer.text = [answerDictionary[@"body"] rso_decodedStringForHtml];
     answer.owner = [RSOStore dictionaryToOwner:answerDictionary[@"owner"]];
     return answer;
 }
@@ -136,7 +137,7 @@
 {
     RSOComment *comment = [RSOComment new];
     comment.postID = (NSUInteger)commentDictionary[@"id"];
-    comment.text = commentDictionary[@"title"];
+    comment.text = [commentDictionary[@"title"] rso_decodedStringForHtml];
     return comment;
 }
 
