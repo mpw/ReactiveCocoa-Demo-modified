@@ -114,6 +114,7 @@ static NSString *const questionCellIdentifier = @"RSOQuestionCellIdentifier";
     RSOAnswer *answer = [self.question.answers objectAtIndex:indexPath.row];
     RSOAnswerCell *answerCell = (RSOAnswerCell *)[self.tableView dequeueReusableCellWithIdentifier:answerCellIdentifier forIndexPath:indexPath];
     [answerCell.answerTextLabel setText:answer.text];
+    [answerCell.userTextLabel setText:answer.owner.screenName];
     return answerCell;
 }
 

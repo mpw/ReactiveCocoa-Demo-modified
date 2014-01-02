@@ -30,13 +30,15 @@
 - (CGFloat) minimumHeightForCell:(NSString *)answer
 {
     [self.answerTextLabel setText:answer];
-    NSString *refinedAnswerText = self.answerTextLabel.text;
-    CGSize size = [refinedAnswerText sizeWithAttributes:@{NSFontAttributeName: self.answerTextLabel.font}];
-    CGFloat labelWidth = self.answerTextLabel.frame.size.width;
-    CGFloat actualHeight = size.height * ceil(size.width/ labelWidth);
+    NSString *refinedAnswerText = self.answerTextLabel.plainText;
+    CGRect newRect = [refinedAnswerText boundingRectWithSize:CGSizeMake(320, INFINITY)
+                                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:@{NSFontAttributeName: self.answerTextLabel.font}
+                                                     context:nil];
+    CGFloat actualHeight = newRect.size.height;
     
     //Add some
-    actualHeight += 20; // 20 for the vertical spacing constraint
+    actualHeight += 53;
     
     return actualHeight < 95 ? 95 : actualHeight ;
 }

@@ -12,6 +12,7 @@
 
 @interface RSOAnswerCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet RTLabel *answerTextLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userTextLabel;
 
 - (CGFloat)minimumHeightForCell:(NSString *)answer;
 @end
