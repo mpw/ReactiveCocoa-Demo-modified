@@ -11,7 +11,6 @@
 #import "ReactiveCocoa.h"
 #import "RSOQuestion.h"
 #import "RSOComment.h"
-#import "NSObject+setValuesForKeysWithJSONDictionary.h"
 #import "NSString+RSOHtmlDecodeAdditions.h"
 
 @interface RSOStore ()

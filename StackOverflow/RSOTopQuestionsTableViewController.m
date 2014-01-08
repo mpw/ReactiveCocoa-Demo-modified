@@ -13,10 +13,11 @@
 #import "RSOQuestion.h"
 #import "RSOQuestionDetailViewController.h"
 #import "RACSignal+Operations.h"
-#import "RSOConstants.h"
 #import "RACScheduler.h"
 #import "RSOQuestionCell.h"
 #import "MBProgressHUD.h"
+
+double const RSOConstantsSearchQueryThrottle = .6;
 
 @interface RSOTopQuestionsTableViewController ()
 @property (strong, nonatomic) UITextField *searchBox;
