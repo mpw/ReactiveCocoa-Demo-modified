@@ -35,7 +35,8 @@
     return [self sharedStore];
 }
 
-- (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString {
+- (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString
+{
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString tag:nil];
 
     return [self questionsForSignal:signal];
@@ -91,6 +92,8 @@
         return [questions copy];
     }];
 }
+
+#pragma mark - Data Transformers
 
 + (RSOQuestion *)dictionaryToQuestion:(NSDictionary *)questionDictionary
 {
