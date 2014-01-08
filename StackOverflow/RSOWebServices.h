@@ -21,8 +21,4 @@
 
 - (RACSignal *)fetchQuestionWithID:(NSUInteger)questionID;
 
-- (void)fetchAnswerWithId:(NSUInteger) answerID completion:(void(^)(NSArray *answer, NSError *error))completion;
-
-- (void)fetchCommentWithId:(NSUInteger) commentID completion:(void(^)(RSOComment *comment, NSError *error))completion;
-
 @end
