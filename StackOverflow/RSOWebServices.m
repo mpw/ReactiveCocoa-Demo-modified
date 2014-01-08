@@ -55,10 +55,17 @@ NSString *const RSOWebServicesSortType = @"hot";
         
         NSURL  *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if(error)
+            {
+                [subscriber sendError:error];
+            }
+            else
+            {
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                [subscriber sendNext:dict[@"items"]];
+            }
             
-            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            
-            [subscriber sendNext:dict[@"items"]];
+            [subscriber sendCompleted];
         }];
         [task resume];
         return [RACDisposable disposableWithBlock:^{

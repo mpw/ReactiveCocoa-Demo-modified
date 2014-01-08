@@ -69,13 +69,17 @@ double const RSOConstantsSearchQueryThrottle = .6;
     
     RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
     [[topQuestionsSignal
-      deliverOn:RACScheduler.mainThreadScheduler]
+      deliverOn:[RACScheduler mainThreadScheduler]]
      subscribeNext:^(NSArray *questions) {
         self.questions = questions;
         self.filteredTopQuestions = [questions copy];
         [self.tableView reloadData];
-         
-         [progressOverlay hide:YES afterDelay:1];
+    } error:^(NSError *error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+        [progressOverlay hide:YES];
+    } completed:^{
+        [progressOverlay hide:YES afterDelay:1];
     }];
 }
 
