@@ -19,4 +19,6 @@
 @interface RSOOwner : NSObject
 @property (nonatomic, copy) NSString *screenName;
 
++ (RSOOwner *)ownerForDictionary:(NSDictionary *)ownerDictionary;
+
 @end

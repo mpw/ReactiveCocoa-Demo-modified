@@ -36,11 +36,40 @@ double const RSOConstantsSearchQueryThrottle = .6;
 {
     [super viewDidLoad];
     
+    RSOStore *sharedStore = [RSOStore sharedStore] ;
+    
+//    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+//    [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+//    [self.tableView
+    
+    MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressOverlay.mode = MBProgressHUDModeIndeterminate;
+    progressOverlay.labelText = @"Downloading Hot Questions";
+    progressOverlay.dimBackground = YES;
+    progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
+    [progressOverlay show:YES];
+    
+    //Running reloadData on table from background thread causes substantial latency to loading table cells
+    //so use mainThreadScheduler to run the update on the main UI thread
+    RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
+    [[topQuestionsSignal
+      deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSArray *questions) {
+         self.questions = questions;
+         self.filteredTopQuestions = [questions copy];
+         [self.tableView reloadData];
+     } error:^(NSError *error) {
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+         [alert show];
+         [progressOverlay hide:YES];
+     } completed:^{
+         [progressOverlay hide:YES afterDelay:1];
+     }];
+    
     self.searchBox = [[UITextField alloc] initWithFrame:CGRectMake(20, 5, 280, 30)];
     self.searchBox.placeholder = @"Search";
     [self.searchBox setBorderStyle:UITextBorderStyleRoundedRect];
     self.searchBox.delegate = self;
-    
     [[[self.searchBox.rac_textSignal throttle:RSOConstantsSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
         //Update Top questions table
         if(queryString && ![queryString isEqualToString:@""])
@@ -53,33 +82,6 @@ double const RSOConstantsSearchQueryThrottle = .6;
             self.filteredTopQuestions = [self.questions copy];
         }
         [self.tableView reloadData];
-    }];
-    
-    RSOStore *sharedStore = [RSOStore sharedStore] ;
-    
-    //Running reloadData on table from background thread causes substantial latency to loading table cells
-    //so use mainThreadScheduler to run the update on the main UI thread
-    
-    MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    progressOverlay.mode = MBProgressHUDModeIndeterminate;
-    progressOverlay.labelText = @"Downloading Hot Questions";
-    progressOverlay.dimBackground = YES;
-    progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
-    [progressOverlay show:YES];
-    
-    RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
-    [[topQuestionsSignal
-      deliverOn:[RACScheduler mainThreadScheduler]]
-     subscribeNext:^(NSArray *questions) {
-        self.questions = questions;
-        self.filteredTopQuestions = [questions copy];
-        [self.tableView reloadData];
-    } error:^(NSError *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-        [progressOverlay hide:YES];
-    } completed:^{
-        [progressOverlay hide:YES afterDelay:1];
     }];
 }
 

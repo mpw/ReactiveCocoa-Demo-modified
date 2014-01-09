@@ -10,4 +10,11 @@
 
 @implementation RSOOwner
 
++ (RSOOwner *)ownerForDictionary:(NSDictionary *)ownerDictionary
+{
+    RSOOwner *owner = [RSOOwner new];
+    owner.screenName = ownerDictionary[@"display_name"];
+    return owner;
+}
+
 @end

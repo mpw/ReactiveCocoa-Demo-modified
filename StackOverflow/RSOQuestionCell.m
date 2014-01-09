@@ -38,4 +38,15 @@
     return actualHeight < 95 ? 95 : actualHeight ;
 }
 
+//- (CGFloat) minimumHeightForCell:(NSString *)question
+//{
+//    CGRect newRect = [question boundingRectWithSize:CGSizeMake(280, INFINITY)
+//                                            options:NSStringDrawingUsesLineFragmentOrigin
+//                                         attributes:@{NSFontAttributeName: self.questionTextLabel.font}
+//                                            context:nil];
+//    CGFloat actualHeight = newRect.size.height + 53;
+//    NSLog(@"My Height:%f MY Width: %f", actualHeight < 95 ? 95 : actualHeight, newRect.size.width);
+//    return actualHeight < 95 ? 95 : actualHeight ;
+//}
+
 @end

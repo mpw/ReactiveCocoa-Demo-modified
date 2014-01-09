@@ -36,4 +36,6 @@
 @interface RSOAnswer : RSOPost
 @property (nonatomic, weak) RSOQuestion *question;
 
++ (RSOAnswer *)answerForDictionary:(NSDictionary *)answerDictionary;
+
 @end

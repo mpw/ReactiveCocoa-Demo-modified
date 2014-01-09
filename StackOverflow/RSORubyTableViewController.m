@@ -25,7 +25,7 @@
     
     MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressOverlay.mode = MBProgressHUDModeIndeterminate;
-    progressOverlay.labelText = @"Downloading Hot Questions";
+    progressOverlay.labelText = @"Downloading Ruby Questions";
     progressOverlay.dimBackground = YES;
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
@@ -35,8 +35,12 @@
      subscribeNext:^(NSArray *questions) {
          self.questions = [questions copy];
          [self.tableView reloadData];
-         
+     } error:^(NSError *error) {
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+         [alert show];
          [progressOverlay hide:YES];
+     } completed:^{
+         [progressOverlay hide:YES afterDelay:1];
      }];
 }
 

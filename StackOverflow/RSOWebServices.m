@@ -8,7 +8,6 @@
 
 #import "RSOWebServices.h"
 #import "ReactiveCocoa.h"
-#import "AFNetworking.h"
 
 
 NSString *const RSOWebServicesBodyFilter = @"body";

@@ -35,8 +35,12 @@
     subscribeNext:^(NSArray *questions) {
         self.questions = [questions copy];
         [self.tableView reloadData];
-        
+    } error:^(NSError *error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
         [progressOverlay hide:YES];
+    } completed:^{
+        [progressOverlay hide:YES afterDelay:1];
     }];
 }
 

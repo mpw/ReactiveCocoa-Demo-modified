@@ -72,6 +72,8 @@
 @property (nonatomic, copy) NSArray *comments;
 @property (nonatomic, weak) RSOAnswer *acceptedAnswer;
 
++ (RSOQuestion *)questionForDictionary:(NSDictionary *)questionDictionary;
+
 @end
 
 
