@@ -1,24 +1,4 @@
 PODS:
-  - AFNetworking (2.0.2):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.0.2):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.0.2):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.0.2)
-  - AFNetworking/Security (2.0.2)
-  - AFNetworking/Serialization (2.0.2)
-  - AFNetworking/UIKit (2.0.2):
-    - AFNetworking/NSURLConnection
   - ReactiveCocoa (2.1.5):
     - ReactiveCocoa/Core
     - ReactiveCocoa/no-arc
@@ -27,11 +7,9 @@ PODS:
   - ReactiveCocoa/no-arc (2.1.5)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.0.2)
   - ReactiveCocoa (~> 2.1.5)
 
 SPEC CHECKSUMS:
-  AFNetworking: 22de50ae71ab1c4859773f61068d6fcd1d8f9a4d
-  ReactiveCocoa: 967339c6f6984beef304cb8bbe05581d6863bb09
+  ReactiveCocoa: e497a250d3d7e4822a724dbabf8b96b6a534a35f
 
 COCOAPODS: 0.25.0
