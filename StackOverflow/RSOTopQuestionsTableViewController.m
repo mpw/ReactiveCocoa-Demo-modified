@@ -17,11 +17,14 @@
 #import "RSOQuestionCell.h"
 #import "MBProgressHUD.h"
 
+#import "UIControl+RACSignalSupport.h"
+
 double const RSOConstantsSearchQueryThrottle = .6;
 
 @interface RSOTopQuestionsTableViewController ()
 @property (strong, nonatomic) UITextField *searchBox;
 @property (nonatomic, copy)NSArray *filteredTopQuestions;
+@property (nonatomic) RACSignal *topQuestionsSignal;
 
 @end
 
@@ -38,10 +41,6 @@ double const RSOConstantsSearchQueryThrottle = .6;
     
     RSOStore *sharedStore = [RSOStore sharedStore] ;
     
-//    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-//    [refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
-//    [self.tableView
-    
     MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressOverlay.mode = MBProgressHUDModeIndeterminate;
     progressOverlay.labelText = @"Downloading Hot Questions";
@@ -49,23 +48,34 @@ double const RSOConstantsSearchQueryThrottle = .6;
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
     
+    //Setup table view control
     //Running reloadData on table from background thread causes substantial latency to loading table cells
     //so use mainThreadScheduler to run the update on the main UI thread
-    RACSignal *topQuestionsSignal = [sharedStore getTopQuestionsWithQuery:nil];
-    [[topQuestionsSignal
-      deliverOn:[RACScheduler mainThreadScheduler]]
+    self.topQuestionsSignal = [[sharedStore getTopQuestionsWithQuery:nil] deliverOn:[RACScheduler mainThreadScheduler]];
+    [self.topQuestionsSignal
      subscribeNext:^(NSArray *questions) {
-         self.questions = questions;
-         self.filteredTopQuestions = [questions copy];
-         [self.tableView reloadData];
+         [self loadquestions:questions];
+         [progressOverlay hide:YES afterDelay:1];
      } error:^(NSError *error) {
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred"
+                                                         message:@"Could not load data"
+                                                        delegate:nil cancelButtonTitle:@"OK"
+                                               otherButtonTitles: nil];
          [alert show];
          [progressOverlay hide:YES];
-     } completed:^{
-         [progressOverlay hide:YES afterDelay:1];
      }];
     
+    //Setup refresh control
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [[refreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(UIRefreshControl *refreshControl) {
+        [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
+            [self loadquestions:questions];
+            [refreshControl endRefreshing]; 
+        }];
+    }];
+    self.refreshControl = refreshControl;
+    
+    //Setup search text box
     self.searchBox = [[UITextField alloc] initWithFrame:CGRectMake(20, 5, 280, 30)];
     self.searchBox.placeholder = @"Search";
     [self.searchBox setBorderStyle:UITextBorderStyleRoundedRect];
@@ -158,6 +168,14 @@ double const RSOConstantsSearchQueryThrottle = .6;
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     return [self.searchBox resignFirstResponder];
+}
+
+#pragma mark - Helpers
+- (void)loadquestions:(NSArray *)questions
+{
+    self.questions = questions;
+    self.filteredTopQuestions = [questions copy];
+    [self.tableView reloadData];
 }
 
 @end
