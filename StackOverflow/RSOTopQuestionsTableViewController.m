@@ -55,10 +55,11 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     [self.topQuestionsSignal
      subscribeNext:^(NSArray *questions) {
          [self loadquestions:questions];
-         [progressOverlay hide:YES afterDelay:1];
      } error:^(NSError *error) {
          [self displayError:@"Could not load data" title:@"An error occurred"];
          [progressOverlay hide:YES];
+     } completed:^{
+         [progressOverlay hide:YES afterDelay:1];
      }];
     
     //Setup refresh control
@@ -66,10 +67,11 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     [[refreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(UIRefreshControl *refreshControl) {
         [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
             [self loadquestions:questions];
-            [refreshControl endRefreshing]; 
         } error:^(NSError *error) {
             [self displayError:@"Could not load data" title:@"An error occurred"];
-            [progressOverlay hide:YES];
+            [refreshControl endRefreshing];
+        } completed:^{
+            [refreshControl endRefreshing];
         }];
     }];
     self.refreshControl = refreshControl;

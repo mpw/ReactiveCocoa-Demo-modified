@@ -62,9 +62,8 @@ NSString *const RSOWebServicesSortType = @"hot";
             {
                 NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                 [subscriber sendNext:dict[@"items"]];
+                [subscriber sendCompleted];
             }
-            
-            [subscriber sendCompleted];
         }];
         [task resume];
         return [RACDisposable disposableWithBlock:^{
