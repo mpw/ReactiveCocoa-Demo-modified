@@ -19,7 +19,7 @@
 
 #import "UIControl+RACSignalSupport.h"
 
-double const RSOConstantsSearchQueryThrottle = .6;
+NSTimeInterval const kSearchQueryThrottle = .6;
 
 @interface RSOTopQuestionsTableViewController ()
 @property (strong, nonatomic) UITextField *searchBox;
@@ -80,7 +80,7 @@ double const RSOConstantsSearchQueryThrottle = .6;
     self.searchBox.placeholder = @"Search";
     [self.searchBox setBorderStyle:UITextBorderStyleRoundedRect];
     self.searchBox.delegate = self;
-    [[[self.searchBox.rac_textSignal throttle:RSOConstantsSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
+    [[[self.searchBox.rac_textSignal throttle:kSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
         //Update Top questions table
         if(queryString && ![queryString isEqualToString:@""])
         {
