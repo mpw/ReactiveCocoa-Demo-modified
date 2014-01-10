@@ -57,11 +57,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
          [self loadquestions:questions];
          [progressOverlay hide:YES afterDelay:1];
      } error:^(NSError *error) {
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred"
-                                                         message:@"Could not load data"
-                                                        delegate:nil cancelButtonTitle:@"OK"
-                                               otherButtonTitles: nil];
-         [alert show];
+         [self displayError:@"Could not load data" title:@"An error occurred"];
          [progressOverlay hide:YES];
      }];
     
@@ -71,6 +67,9 @@ NSTimeInterval const kSearchQueryThrottle = .6;
         [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
             [self loadquestions:questions];
             [refreshControl endRefreshing]; 
+        } error:^(NSError *error) {
+            [self displayError:@"Could not load data" title:@"An error occurred"];
+            [progressOverlay hide:YES];
         }];
     }];
     self.refreshControl = refreshControl;
@@ -176,6 +175,16 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     self.questions = questions;
     self.filteredTopQuestions = [questions copy];
     [self.tableView reloadData];
+}
+
+- (void)displayError:(NSString *)message title:(NSString *)title
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+    [alert show];
 }
 
 @end
