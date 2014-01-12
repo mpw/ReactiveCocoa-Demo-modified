@@ -36,37 +36,37 @@
     return [self sharedStore];
 }
 
-- (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString
+- (RACSignal *)getTopQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString tag:nil];
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:nil];
 
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopiOSQuestionsWithQuery:(NSString *)queryString
+- (RACSignal *)getTopiOSQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString tag:@"iOS"];
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"iOS"];
     
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopRubyQuestionsWithQuery:(NSString *)queryString
+- (RACSignal *)getTopRubyQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString tag:@"Ruby"];
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Ruby"];
     
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopAndroidQuestionsWithQuery:(NSString *)queryString
+- (RACSignal *)getTopAndroidQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString tag:@"Android"];
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Android"];
     
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopWindowsQuestionsWithQuery:(NSString *)queryString
+- (RACSignal *)getTopWindowsQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithQuery:queryString tag:@"Windows"];
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Windows"];
     
     return [self questionsForSignal:signal];
 }

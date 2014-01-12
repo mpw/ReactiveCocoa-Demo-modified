@@ -30,7 +30,7 @@
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
     
-    [[[[RSOStore sharedStore] getTopAndroidQuestionsWithQuery:nil]
+    [[[[RSOStore sharedStore] getTopAndroidQuestions]
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(NSArray *questions) {
          self.questions = [questions copy];

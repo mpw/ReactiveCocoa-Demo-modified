@@ -42,7 +42,7 @@ NSString *const RSOWebServicesSortType = @"hot";
     return [self sharedServices];
 }
 
-- (RACSignal *)fetchQuestionsWithQuery:(NSString *)query tag:(NSString *)tag
+- (RACSignal *)fetchQuestionsWithTag:(NSString *)tag
 {
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         

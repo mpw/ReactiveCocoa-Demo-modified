@@ -51,7 +51,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     //Setup table view control
     //Running reloadData on table from background thread causes substantial latency to loading table cells
     //so use mainThreadScheduler to run the update on the main UI thread
-    self.topQuestionsSignal = [[sharedStore getTopQuestionsWithQuery:nil] deliverOn:[RACScheduler mainThreadScheduler]];
+    self.topQuestionsSignal = [[sharedStore getTopQuestions] deliverOn:[RACScheduler mainThreadScheduler]];
     [self.topQuestionsSignal
      subscribeNext:^(NSArray *questions) {
          [self loadquestions:questions];

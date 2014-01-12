@@ -14,11 +14,11 @@
 
 + (RSOStore*)sharedStore;
 
-- (RACSignal *)getTopQuestionsWithQuery:(NSString *)queryString;
-- (RACSignal *)getTopiOSQuestionsWithQuery:(NSString *)queryString;
-- (RACSignal *)getTopAndroidQuestionsWithQuery:(NSString *)queryString;
-- (RACSignal *)getTopWindowsQuestionsWithQuery:(NSString *)queryString;
-- (RACSignal *)getTopRubyQuestionsWithQuery:(NSString *)queryString;
+- (RACSignal *)getTopQuestions;
+- (RACSignal *)getTopiOSQuestions;
+- (RACSignal *)getTopAndroidQuestions;
+- (RACSignal *)getTopWindowsQuestions;
+- (RACSignal *)getTopRubyQuestions;
 
 - (RACSignal *)getQuestionData:(NSUInteger)questionID;
 
