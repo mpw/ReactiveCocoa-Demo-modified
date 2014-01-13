@@ -10,11 +10,11 @@
 #import "RSOOwner.h"
 
 @interface RSOPost : NSObject
+
 @property (nonatomic) NSUInteger postID;
 @property (nonatomic, copy) NSURL *url;
 @property (nonatomic) NSUInteger score;
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, strong) RSOOwner *owner;
-
 
 @end

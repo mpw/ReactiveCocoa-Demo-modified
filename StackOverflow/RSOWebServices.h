@@ -15,7 +15,7 @@
 
 @interface RSOWebServices : NSObject<NSURLSessionDataDelegate>
 
-+ (RSOWebServices *) sharedServices;
++ (RSOWebServices *)sharedServices;
 
 - (RACSignal *)fetchQuestionsWithTag:(NSString *)tag;
 

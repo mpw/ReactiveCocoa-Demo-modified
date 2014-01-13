@@ -9,16 +9,17 @@
 #import "RSOWebServices.h"
 #import "ReactiveCocoa.h"
 
-
 NSString *const RSOWebServicesBodyFilter = @"body";
 NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
 NSString *const RSOWebServicesSort = @"desc";
 NSString *const RSOWebServicesSortType = @"hot";
 
 @interface RSOWebServices ()
+
 @property (nonatomic, copy) NSURL *baseUrl;
 @property (nonatomic, copy) NSString *baseSite;
 @property (nonatomic, copy) NSURLSession *client;
+
 @end
 
 @implementation RSOWebServices
@@ -29,7 +30,9 @@ NSString *const RSOWebServicesSortType = @"hot";
     if(!sharedService)
     {
         sharedService = [[super allocWithZone:nil] init];
-        sharedService.client = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:sharedService delegateQueue:nil];
+        sharedService.client = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
+                                                             delegate:sharedService
+                                                        delegateQueue:nil];
         sharedService.baseUrl = [NSURL URLWithString:@"http://api.stackexchange.com/2.1/"];
         sharedService.baseSite = @"stackoverflow";
     }
@@ -65,12 +68,13 @@ NSString *const RSOWebServicesSortType = @"hot";
                 [subscriber sendCompleted];
             }
         }];
+        
         [task resume];
+        
         return [RACDisposable disposableWithBlock:^{
             
         }];
     }];
-    
     
     return signal;
 }
@@ -86,8 +90,11 @@ NSString *const RSOWebServicesSortType = @"hot";
             
             [subscriber sendNext:dict[@"items"]];
         }];
+        
         [task resume];
+        
         return [RACDisposable disposableWithBlock:^{
+            
         }];
     }];
     

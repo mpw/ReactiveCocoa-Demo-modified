@@ -8,7 +8,6 @@
 
 #import "RSOQuestion.h"
 #import "RSOAnswer.h"
-
 #import "NSString+RSOHtmlDecodeAdditions.h"
 
 @implementation RSOQuestion
@@ -25,7 +24,7 @@
     question.owner = [RSOOwner ownerForDictionary:questionDictionary[@"owner"]];
     
     NSMutableArray *answers = [[NSMutableArray alloc ]init];
-    for (NSDictionary *answerDictionaryItem in questionDictionary[@"answers"])
+    for(NSDictionary *answerDictionaryItem in questionDictionary[@"answers"])
     {
         RSOAnswer *answer = [RSOAnswer answerForDictionary:answerDictionaryItem];
         answer.question = question;

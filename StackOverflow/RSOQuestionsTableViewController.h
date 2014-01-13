@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const cellIdentifier;
+extern NSString * const cellIdentifier;
 
 @interface RSOQuestionsTableViewController : UITableViewController
-@property (nonatomic) NSArray *questions;
+
+@property (nonatomic, copy) NSArray *questions;
 
 @end

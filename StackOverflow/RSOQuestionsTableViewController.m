@@ -10,7 +10,7 @@
 #import "RSOQuestionCell.h"
 
 
-NSString *const cellIdentifier = @"QuestionCellIdentifier";
+NSString * const cellIdentifier = @"QuestionCellIdentifier";
 
 @interface RSOQuestionsTableViewController ()
 

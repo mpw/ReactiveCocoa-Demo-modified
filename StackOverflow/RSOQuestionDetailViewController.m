@@ -20,7 +20,9 @@ static NSString *const answerCellIdentifier = @"RSOAnswerCellIdentifier";
 static NSString *const questionCellIdentifier = @"RSOQuestionCellIdentifier";
 
 @interface RSOQuestionDetailViewController ()
+
 @property (strong, nonatomic) RSOQuestion *question;
+
 @end
 
 @implementation RSOQuestionDetailViewController
@@ -96,13 +98,11 @@ static NSString *const questionCellIdentifier = @"RSOQuestionCellIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     if(!self.question.answers)
         return 0;
     

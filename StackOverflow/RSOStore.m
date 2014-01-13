@@ -12,10 +12,10 @@
 #import "RSOQuestion.h"
 #import "RSOAnswer.h"
 #import "RSOComment.h"
-
 #import "NSString+RSOHtmlDecodeAdditions.h"
 
 @interface RSOStore ()
+
 @end
 
 @implementation RSOStore

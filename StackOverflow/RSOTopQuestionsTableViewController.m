@@ -52,8 +52,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     //Running reloadData on table from background thread causes substantial latency to loading table cells
     //so use mainThreadScheduler to run the update on the main UI thread
     self.topQuestionsSignal = [[sharedStore getTopQuestions] deliverOn:[RACScheduler mainThreadScheduler]];
-    [self.topQuestionsSignal
-     subscribeNext:^(NSArray *questions) {
+    [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
          [self loadquestions:questions];
      } error:^(NSError *error) {
          [self displayError:@"Could not load data" title:@"An error occurred"];
@@ -106,13 +105,11 @@ NSTimeInterval const kSearchQueryThrottle = .6;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     if([self.filteredTopQuestions count])
         return [self.filteredTopQuestions count];
     else
@@ -153,20 +150,16 @@ NSTimeInterval const kSearchQueryThrottle = .6;
 
 #pragma mark - Table view delegate
 
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
     RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
     RSOQuestionDetailViewController *detailViewController = [[RSOQuestionDetailViewController alloc] initWithQuestion:question];
-    
-    // Push the view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 #pragma mark - textfield delegate
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     return [self.searchBox resignFirstResponder];
 }

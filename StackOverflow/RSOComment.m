@@ -7,7 +7,6 @@
 //
 
 #import "RSOComment.h"
-
 #import "NSString+RSOHtmlDecodeAdditions.h"
 
 @implementation RSOComment

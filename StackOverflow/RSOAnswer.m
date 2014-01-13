@@ -8,7 +8,6 @@
 
 #import "RSOAnswer.h"
 #import "RSOOwner.h"
-
 #import "NSString+RSOHtmlDecodeAdditions.h"
 
 @implementation RSOAnswer

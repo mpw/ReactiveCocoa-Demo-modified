@@ -30,13 +30,15 @@
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
     
-    [[[[RSOStore sharedStore] getTopRubyQuestions]
-      deliverOn:RACScheduler.mainThreadScheduler]
-     subscribeNext:^(NSArray *questions) {
+    [[[[RSOStore sharedStore] getTopRubyQuestions] deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSArray *questions) {
          self.questions = [questions copy];
          [self.tableView reloadData];
      } error:^(NSError *error) {
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred" message:@"Could not load data" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred"
+                                                         message:@"Could not load data"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles: nil];
          [alert show];
          [progressOverlay hide:YES];
      } completed:^{
@@ -54,7 +56,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
@@ -87,15 +88,10 @@
 
 #pragma mark - Table delegate
 
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
     RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
     RSOQuestionDetailViewController *detailViewController = [[RSOQuestionDetailViewController alloc] initWithQuestion:question];
-    
-    // Push the view controller.
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
