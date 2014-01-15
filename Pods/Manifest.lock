@@ -1,15 +1,25 @@
 PODS:
+  - MBProgressHUD (0.8)
   - ReactiveCocoa (2.1.5):
     - ReactiveCocoa/Core
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/Core (2.1.5):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.1.5)
+  - RTLabel (1.0)
 
 DEPENDENCIES:
+  - MBProgressHUD (~> 0.8)
   - ReactiveCocoa (~> 2.1.5)
+  - RTLabel (from `/Users/mtxdestr/Git/RTLabel`)
+
+EXTERNAL SOURCES:
+  RTLabel:
+    :path: /Users/mtxdestr/Git/RTLabel
 
 SPEC CHECKSUMS:
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   ReactiveCocoa: e497a250d3d7e4822a724dbabf8b96b6a534a35f
+  RTLabel: 0fd83453e16a169150030f80144c832f42618bb9
 
 COCOAPODS: 0.25.0
