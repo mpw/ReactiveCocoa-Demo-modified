@@ -72,7 +72,7 @@ NSString *const RSOWebServicesSortType = @"hot";
         [task resume];
         
         return [RACDisposable disposableWithBlock:^{
-            
+            [task cancel];
         }];
     }];
     
@@ -94,7 +94,7 @@ NSString *const RSOWebServicesSortType = @"hot";
         [task resume];
         
         return [RACDisposable disposableWithBlock:^{
-            
+            [task cancel];
         }];
     }];
     
