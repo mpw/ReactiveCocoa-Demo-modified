@@ -82,7 +82,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     self.searchBox.delegate = self;
     [[[self.searchBox.rac_textSignal throttle:kSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
         //Update Top questions table
-        if(queryString && ![queryString isEqualToString:@""])
+        if([queryString length] > 0)
         {
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", queryString];
             self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];

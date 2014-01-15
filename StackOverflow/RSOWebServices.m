@@ -49,12 +49,9 @@ NSInteger const RSOErrorCode = -42;
 
 - (RACSignal *)fetchQuestionsWithTag:(NSString *)tag
 {
+    NSString *relativeUrl = [self createRelativeURLWithTag:tag];
+    
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        
-        NSMutableString *relativeUrl = [[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"questions/?site=%@&order=%@&sort=%@", self.baseSite, RSOWebServicesSort, RSOWebServicesSortType]];
-        
-        if(tag)
-            [relativeUrl appendFormat:@"&tagged=%@", tag];
         
         
         NSURL  *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
@@ -71,9 +68,18 @@ NSInteger const RSOErrorCode = -42;
             }
             else
             {
-                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-                [subscriber sendNext:dict[@"items"]];
-                [subscriber sendCompleted];
+                NSError *jsonError;
+                NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
+                
+                if(jsonError)
+                {
+                    [subscriber sendError:jsonError];
+                }
+                else
+                {
+                    [subscriber sendNext:dict[@"items"]];
+                    [subscriber sendCompleted];
+                }
             }
         }];
         
@@ -107,5 +113,16 @@ NSInteger const RSOErrorCode = -42;
     }];
     
     return signal;
+}
+
+- (NSString *)createRelativeURLWithTag:(NSString *)tag
+{
+    NSString *relativeUrl = [NSString stringWithFormat:@"questions/?site=%@&order=%@&sort=%@%@",
+                                     self.baseSite,
+                                     RSOWebServicesSort,
+                                     RSOWebServicesSortType,
+                                     tag ? [NSString stringWithFormat:@"&tagged=%@", tag] : @""];
+    
+    return relativeUrl;
 }
 @end
