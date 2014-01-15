@@ -26,7 +26,7 @@
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
     
-    [[[[RSOStore sharedStore] getTopiOSQuestions] deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSArray *questions) {
+    [[[[RSOStore sharedStore] topiOSQuestions] deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSArray *questions) {
          self.questions = [questions copy];
          [self.tableView reloadData];
      } error:^(NSError *error) {

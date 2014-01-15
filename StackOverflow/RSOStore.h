@@ -13,11 +13,11 @@
 @interface RSOStore : NSObject
 
 + (RSOStore*)sharedStore;
-- (RACSignal *)getTopQuestions;
-- (RACSignal *)getTopiOSQuestions;
-- (RACSignal *)getTopAndroidQuestions;
-- (RACSignal *)getTopWindowsQuestions;
-- (RACSignal *)getTopRubyQuestions;
+- (RACSignal *)topQuestions;
+- (RACSignal *)topiOSQuestions;
+- (RACSignal *)topAndroidQuestions;
+- (RACSignal *)topWindowsQuestions;
+- (RACSignal *)topRubyQuestions;
 - (RACSignal *)getQuestionData:(NSUInteger)questionID;
 
 @end

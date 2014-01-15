@@ -36,35 +36,35 @@
     return [self sharedStore];
 }
 
-- (RACSignal *)getTopQuestions
+- (RACSignal *)topQuestions
 {
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:nil];
 
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopiOSQuestions
+- (RACSignal *)topiOSQuestions
 {
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"iOS"];
     
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopRubyQuestions
+- (RACSignal *)topRubyQuestions
 {
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Ruby"];
     
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopAndroidQuestions
+- (RACSignal *)topAndroidQuestions
 {
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Android"];
     
     return [self questionsForSignal:signal];
 }
 
-- (RACSignal *)getTopWindowsQuestions
+- (RACSignal *)topWindowsQuestions
 {
     RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Windows"];
     
