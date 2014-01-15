@@ -13,6 +13,8 @@ NSString *const RSOWebServicesBodyFilter = @"body";
 NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
 NSString *const RSOWebServicesSort = @"desc";
 NSString *const RSOWebServicesSortType = @"hot";
+NSString *const RSOErrorDomain = @"RSOErrorDomain";
+NSInteger const RSOErrorCode = -42;
 
 @interface RSOWebServices ()
 
@@ -60,6 +62,12 @@ NSString *const RSOWebServicesSortType = @"hot";
             if(error)
             {
                 [subscriber sendError:error];
+            }
+            else if(!data)
+            {
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"No data was received from the server."};
+                NSError *dataError = [NSError errorWithDomain:RSOErrorDomain code:RSOErrorCode userInfo:userInfo];
+                [subscriber sendError: dataError];
             }
             else
             {
