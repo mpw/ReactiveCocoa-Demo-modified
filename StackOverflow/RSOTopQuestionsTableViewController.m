@@ -55,7 +55,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
          [self loadquestions:questions];
      } error:^(NSError *error) {
-         [self displayError:@"Could not load data" title:@"An error occurred"];
+         [self displayError:[error localizedDescription] title:@"An error occurred"];
          [progressOverlay hide:YES];
      } completed:^{
          [progressOverlay hide:YES afterDelay:1];
@@ -67,7 +67,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
         [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
             [self loadquestions:questions];
         } error:^(NSError *error) {
-            [self displayError:@"Could not load data" title:@"An error occurred"];
+            [self displayError:[error localizedDescription] title:@"An error occurred"];
             [refreshControl endRefreshing];
         } completed:^{
             [refreshControl endRefreshing];
