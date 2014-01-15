@@ -80,9 +80,9 @@
 
 - (RACSignal *)questionsForSignal:(RACSignal *)signal
 {
-    return  [signal map:^(NSArray *questionsArray) {
+    return  [signal map:^(NSArray *questionDicts) {
         NSMutableArray *questions = [[NSMutableArray alloc]init];
-        for(NSDictionary *questionDictionaryItem in questionsArray)
+        for(NSDictionary *questionDictionaryItem in questionDicts)
         {
             RSOQuestion *question = [RSOQuestion questionForDictionary:questionDictionaryItem];
             [questions addObject:question];
