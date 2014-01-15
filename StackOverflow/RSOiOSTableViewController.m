@@ -12,6 +12,7 @@
 #import "RSOQuestionCell.h"
 #import "RSOQuestionDetailViewController.h"
 #import "MBProgressHUD.h"
+#import "RACEXTScope.h"
 
 @implementation RSOiOSTableViewController
 
@@ -26,7 +27,9 @@
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
     
+    @weakify(self);
     [[[[RSOStore sharedStore] topiOSQuestions] deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSArray *questions) {
+        @strongify(self);
          self.questions = [questions copy];
          [self.tableView reloadData];
      } error:^(NSError *error) {
