@@ -8,6 +8,7 @@
 
 #import "RSOWebServices.h"
 #import "ReactiveCocoa.h"
+#import "RACEXTScope.h"
 
 NSString *const RSOWebServicesBodyFilter = @"body";
 NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
@@ -50,10 +51,9 @@ NSInteger const RSOErrorCode = -42;
 - (RACSignal *)fetchQuestionsWithTag:(NSString *)tag
 {
     NSString *relativeUrl = [self createRelativeURLWithTag:tag];
-    
+    @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        
-        
+        @strongify(self);
         NSURL  *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if(error)
@@ -95,7 +95,9 @@ NSInteger const RSOErrorCode = -42;
 
 - (RACSignal *)fetchQuestionWithID:(NSUInteger)questionID
 {
+    @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
         NSString *relativeUrl = [NSString stringWithFormat:@"questions/%d/?site=%@&filter=%@", questionID, self.baseSite, RSOWebServicesBodyANDAnswersFilter];
         NSURL *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
