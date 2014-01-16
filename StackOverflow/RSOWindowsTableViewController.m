@@ -72,7 +72,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#warning: Ask why RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath]; is configuring the cell in the tableView thus calling heightForRowAtIndexPath in an infinite loop.
     RSOQuestionCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     RSOQuestion *question = [self.questions objectAtIndex:indexPath.row];
     CGFloat height = [cell minimumHeightForCell:question.text];
