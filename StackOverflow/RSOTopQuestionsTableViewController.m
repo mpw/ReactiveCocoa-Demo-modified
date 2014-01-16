@@ -49,7 +49,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
     [progressOverlay show:YES];
     
-    //
+    //Use 'weak' self to avoid retain cycles in blocks below
     @weakify(self);
     //Setup table view control
     //Running reloadData on table from background thread causes substantial latency to loading table cells
@@ -87,35 +87,21 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     self.searchBox.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.searchBox.delegate = self;
 
-//    [[[self.searchBox.rac_textSignal throttle:kSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
-//        //Update Top questions table
-//        if(queryString && ![queryString isEqualToString:@""])
-//        {
-//            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", queryString];
-//            self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
-//        }
-//        else
-//        {
-//            self.filteredTopQuestions = [self.questions copy];
-//        }
-//        [self.tableView reloadData];
-//    }];
-
     RACSignal *searchBoxSignal = [[[self.searchBox rac_textSignal] throttle:kSearchQueryThrottle] skip:1];
     RAC(self,filteredTopQuestions) = [RACSignal combineLatest:@[searchBoxSignal, self.topQuestionsSignal]
-                                                         reduce:^id(NSString *filterString, NSArray *questions) {
-                                                             @strongify(self);
-                                                             if ([filterString length] > 0)
-                                                             {
-                                                                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", filterString];
-                                                                 self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
-                                                                 return self.filteredTopQuestions;
-                                                             }
-                                                             else
-                                                             {
-                                                                 return questions;
-                                                             }
-                                                         }
+                                                       reduce:^id(NSString *filterString, NSArray *questions) {
+                                                           @strongify(self);
+                                                           if ([filterString length] > 0)
+                                                           {
+                                                               NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", filterString];
+                                                               self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
+                                                               return self.filteredTopQuestions;
+                                                           }
+                                                           else
+                                                           {
+                                                               return questions;
+                                                           }
+                                                       }
                                         ];
 }
 
