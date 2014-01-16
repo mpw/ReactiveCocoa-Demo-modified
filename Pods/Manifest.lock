@@ -11,11 +11,11 @@ PODS:
 DEPENDENCIES:
   - MBProgressHUD (~> 0.8)
   - ReactiveCocoa (~> 2.1.5)
-  - RTLabel (from `/Users/mtxdestr/Git/RTLabel`)
+  - RTLabel (from `/Users/mtxdestr/Documents/Stackoverflow/RTLabel`)
 
 EXTERNAL SOURCES:
   RTLabel:
-    :path: /Users/mtxdestr/Git/RTLabel
+    :path: /Users/mtxdestr/Documents/Stackoverflow/RTLabel
 
 SPEC CHECKSUMS:
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
