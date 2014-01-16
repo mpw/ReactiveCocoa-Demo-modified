@@ -83,28 +83,54 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     //Setup search text box
     self.searchBox = [[UITextField alloc] initWithFrame:CGRectMake(20, 5, 280, 30)];
     self.searchBox.placeholder = @"Search";
-    [self.searchBox setBorderStyle:UITextBorderStyleRoundedRect];
+    self.searchBox.borderStyle = UITextBorderStyleRoundedRect;
+    self.searchBox.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.searchBox.delegate = self;
-    [[[self.searchBox.rac_textSignal throttle:kSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
-        @strongify(self);
-        //Update Top questions table
-        if([queryString length] > 0)
-        {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", queryString];
-            self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
-        }
-        else
-        {
-            self.filteredTopQuestions = [self.questions copy];
-        }
-        [self.tableView reloadData];
-    }];
+
+//    [[[self.searchBox.rac_textSignal throttle:kSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
+//        //Update Top questions table
+//        if(queryString && ![queryString isEqualToString:@""])
+//        {
+//            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", queryString];
+//            self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
+//        }
+//        else
+//        {
+//            self.filteredTopQuestions = [self.questions copy];
+//        }
+//        [self.tableView reloadData];
+//    }];
+
+    RACSignal *searchBoxSignal = [[[self.searchBox rac_textSignal] throttle:kSearchQueryThrottle] skip:1];
+    RAC(self,filteredTopQuestions) = [RACSignal combineLatest:@[searchBoxSignal, self.topQuestionsSignal]
+                                                         reduce:^id(NSString *filterString, NSArray *questions) {
+                                                             @strongify(self);
+                                                             if ([filterString length] > 0)
+                                                             {
+                                                                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", filterString];
+                                                                 self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
+                                                                 return self.filteredTopQuestions;
+                                                             }
+                                                             else
+                                                             {
+                                                                 return questions;
+                                                             }
+                                                         }
+                                        ];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Override setter for filteredTopQuestions
+
+- (void)setFilteredTopQuestions:(NSArray *)filteredTopQuestions
+{
+    _filteredTopQuestions = filteredTopQuestions;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -171,6 +197,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
 }
 
 #pragma mark - Helpers
+
 - (void)loadQuestions:(NSArray *)questions
 {
     self.questions = questions;
