@@ -88,12 +88,12 @@ NSTimeInterval const kSearchQueryThrottle = .6;
 
     RACSignal *searchBoxSignal = [[[self.searchBox rac_textSignal] throttle:kSearchQueryThrottle] skip:1];
     RAC(self,filteredTopQuestions) = [RACSignal combineLatest:@[searchBoxSignal, topQuestionsSignal]
-                                                       reduce:^id(NSString *filterString, NSArray *questions) {
+                                                       reduce:^NSArray *(NSString *filterString, NSArray *questions) {
                                                            @strongify(self);
                                                            if ([filterString length] > 0)
                                                            {
                                                                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"text contains[c] %@", filterString];
-                                                               self.filteredTopQuestions = [self.questions filteredArrayUsingPredicate:predicate];
+                                                               self.filteredTopQuestions = [questions filteredArrayUsingPredicate:predicate];
                                                                return self.filteredTopQuestions;
                                                            }
                                                            else
