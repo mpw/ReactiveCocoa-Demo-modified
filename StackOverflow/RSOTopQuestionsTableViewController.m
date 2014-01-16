@@ -83,7 +83,8 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     //Setup search text box
     self.searchBox = [[UITextField alloc] initWithFrame:CGRectMake(20, 5, 280, 30)];
     self.searchBox.placeholder = @"Search";
-    [self.searchBox setBorderStyle:UITextBorderStyleRoundedRect];
+    self.searchBox.borderStyle = UITextBorderStyleRoundedRect;
+    self.searchBox.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.searchBox.delegate = self;
     [[[self.searchBox.rac_textSignal throttle:kSearchQueryThrottle] skip:1] subscribeNext:^(NSString *queryString) {
         @strongify(self);
