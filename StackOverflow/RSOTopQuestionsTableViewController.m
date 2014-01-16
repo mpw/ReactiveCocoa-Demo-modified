@@ -25,7 +25,6 @@ NSTimeInterval const kSearchQueryThrottle = .6;
 @interface RSOTopQuestionsTableViewController ()
 @property (strong, nonatomic) UITextField *searchBox;
 @property (nonatomic, copy)NSArray *filteredTopQuestions;
-@property (nonatomic) RACSignal *topQuestionsSignal;
 
 @end
 
@@ -54,8 +53,8 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     //Setup table view control
     //Running reloadData on table from background thread causes substantial latency to loading table cells
     //so use mainThreadScheduler to run the update on the main UI thread
-    self.topQuestionsSignal = [[sharedStore topQuestions] deliverOn:[RACScheduler mainThreadScheduler]];
-    [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
+    RACSignal *topQuestionsSignal = [[sharedStore topQuestions] deliverOn:[RACScheduler mainThreadScheduler]];
+    [topQuestionsSignal subscribeNext:^(NSArray *questions) {
         @strongify(self);
          [self loadQuestions:questions];
      } error:^(NSError *error) {
@@ -68,7 +67,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     //Setup refresh control
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [[refreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(UIRefreshControl *refreshControl) {
-        [self.topQuestionsSignal subscribeNext:^(NSArray *questions) {
+        [topQuestionsSignal subscribeNext:^(NSArray *questions) {
             @strongify(self);
             [self loadQuestions:questions];
         } error:^(NSError *error) {
@@ -88,7 +87,7 @@ NSTimeInterval const kSearchQueryThrottle = .6;
     self.searchBox.delegate = self;
 
     RACSignal *searchBoxSignal = [[[self.searchBox rac_textSignal] throttle:kSearchQueryThrottle] skip:1];
-    RAC(self,filteredTopQuestions) = [RACSignal combineLatest:@[searchBoxSignal, self.topQuestionsSignal]
+    RAC(self,filteredTopQuestions) = [RACSignal combineLatest:@[searchBoxSignal, topQuestionsSignal]
                                                        reduce:^id(NSString *filterString, NSArray *questions) {
                                                            @strongify(self);
                                                            if ([filterString length] > 0)
