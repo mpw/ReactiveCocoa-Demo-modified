@@ -4,95 +4,45 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-AFNetworking.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods-RTLabel.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods-ReactiveCocoa.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>07964B49D92E4CF38B7E3DE7</key>
+		<key>093D27938E6F4D59A916F0B1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>24E8EBEFF1FC490595A2572F</key>
+		<key>0A14372A538448B0907DB35D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>42AF410A64A1475CA19CF200</key>
+		<key>7D63C3138FE947C3BB87BF3A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>64F026AE5C5F48ACAAD01437</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7C7FF325DC5B4DA18779669C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>863158B7B87F4E18AD37E549</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8DC7FA80844D44DBB9739395</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9C4E96BBD7CE4800AB018663</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A0D9F32BC2C045228320AC57</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AA273B1871E84BB186E40574</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C6EEACA7190E4638A392967A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CA526B1292A34DF4889B762A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CBE80C10E4BA4D3E94D95593</key>
+		<key>CAB20FAE2446405D9B15BE73</key>
 		<dict>
 			<key>primary</key>
 			<true/>

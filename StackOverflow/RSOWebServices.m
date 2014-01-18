@@ -98,7 +98,7 @@ NSInteger const RSOErrorCode = -42;
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        NSString *relativeUrl = [NSString stringWithFormat:@"questions/%d/?site=%@&filter=%@", questionID, self.baseSite, RSOWebServicesBodyANDAnswersFilter];
+        NSString *relativeUrl = [NSString stringWithFormat:@"questions/%ld/?site=%@&filter=%@", (long)questionID, self.baseSite, RSOWebServicesBodyANDAnswersFilter];
         NSURL *fetchQuestionURL = [NSURL URLWithString:relativeUrl relativeToURL:self.baseUrl];
         NSURLSessionDataTask *task = [self.client dataTaskWithURL:fetchQuestionURL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             
