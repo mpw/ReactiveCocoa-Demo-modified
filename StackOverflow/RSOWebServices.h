@@ -10,6 +10,7 @@
 #import "RSOAnswer.h"
 #import "RSOQuestion.h"
 #import "RSOComment.h"
+#import <MPWFoundation/MPWFoundation.h>
 
 @class RACSignal;
 
@@ -20,5 +21,8 @@
 - (RACSignal *)fetchQuestionsWithTag:(NSString *)tag;
 
 - (RACSignal *)fetchQuestionWithID:(NSUInteger)questionID;
+
+-(void)sendFetchedQuestionsFor:(NSString*)tag to:(TargetBlock)target;
+-(MPWStream*)streamSendingTo:(TargetBlock)target;
 
 @end

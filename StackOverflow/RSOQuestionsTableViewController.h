@@ -10,8 +10,14 @@
 
 extern NSString * const cellIdentifier;
 
+@class MPWStream;
+
 @interface RSOQuestionsTableViewController : UITableViewController
 
-@property (nonatomic, copy) NSArray *questions;
+@property (nonatomic, strong) NSMutableArray *questions;
+@property (nonatomic, strong) NSString *category;
+@property (nonatomic, strong) MPWStream *questionsStream;
+
+-(void)configureViewForQuestions:(NSString*)questionTag label:(NSString*)questionsLabel;
 
 @end

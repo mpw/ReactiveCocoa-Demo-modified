@@ -14,6 +14,10 @@
 #import "MBProgressHUD.h"
 #import "RACEXTScope.h"
 
+@interface RSOiOSTableViewController ()
+
+@end
+
 @implementation RSOiOSTableViewController
 
 - (void)viewDidLoad

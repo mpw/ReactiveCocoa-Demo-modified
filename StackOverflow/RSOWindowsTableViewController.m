@@ -24,29 +24,7 @@
 {
     [super viewDidLoad];
     
-    MBProgressHUD *progressOverlay = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    progressOverlay.mode = MBProgressHUDModeIndeterminate;
-    progressOverlay.labelText = @"Downloading Windows Questions";
-    progressOverlay.dimBackground = YES;
-    progressOverlay.minSize = CGSizeMake(135.0f,135.0f);
-    [progressOverlay show:YES];
-    
-    @weakify(self);
-    [[[[RSOStore sharedStore] topWindowsQuestions] deliverOn:RACScheduler.mainThreadScheduler] subscribeNext:^(NSArray *questions) {
-        @strongify(self);
-        self.questions = [questions copy];
-        [self.tableView reloadData];
-    } error:^(NSError *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An error occurred"
-                                                        message:@"Could not load data"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
-        [progressOverlay hide:YES];
-    } completed:^{
-        [progressOverlay hide:YES afterDelay:1];
-    }];
+    [self configureViewForQuestions:@"Windows" label:@"Downloading Windows Questions"];
 }
 
 - (void)didReceiveMemoryWarning

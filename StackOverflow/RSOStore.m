@@ -45,28 +45,32 @@
 
 - (RACSignal *)topiOSQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"iOS"];
-    
-    return [self questionsForSignal:signal];
+    return [self questionsForTag:@"iOS"];
 }
 
 - (RACSignal *)topRubyQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Ruby"];
-    
-    return [self questionsForSignal:signal];
+    return [self questionsForTag:@"Ruby"];
+}
+
+-(void)sendFetchedQuestionsFor:(NSString*)tag to:(TargetBlock)target
+{
+    [[RSOWebServices sharedServices] sendFetchedQuestionsFor:tag to:target];
 }
 
 - (RACSignal *)topAndroidQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Android"];
-    
-    return [self questionsForSignal:signal];
+    return [self questionsForTag:@"Android"];
 }
 
 - (RACSignal *)topWindowsQuestions
 {
-    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:@"Windows"];
+    return [self questionsForTag:@"Windows"];
+}
+
+- (RACSignal*)questionsForTag:(NSString*)tag
+{
+    RACSignal *signal = [[RSOWebServices sharedServices] fetchQuestionsWithTag:tag];
     
     return [self questionsForSignal:signal];
 }

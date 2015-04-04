@@ -10,6 +10,11 @@
 #import "ReactiveCocoa.h"
 #import "RACEXTScope.h"
 
+
+#import <MPWFoundation/MPWFoundation.h>
+
+
+
 NSString *const RSOWebServicesBodyFilter = @"body";
 NSString *const RSOWebServicesBodyANDAnswersFilter = @"_ba";
 NSString *const RSOWebServicesSort = @"desc";
@@ -47,6 +52,25 @@ NSInteger const RSOErrorCode = -42;
 {
     return [self sharedServices];
 }
+
+-(MPWStream*)streamSendingTo:(TargetBlock)target
+{
+    MPWURLFetchStream *fetcher;
+    
+    fetcher=[MPWURLFetchStream streamWithBaseURL:[self baseUrl] target:
+             [MPWConvertFromJSONStream streamWithKey:@"items" target:
+              [MPWDict2ObjStream streamWithClass:[RSOQuestion class] selector:@selector(questionForDictionary:) target:
+               [MPWThreadSwitchStream streamWithTarget:
+                [MPWBlockTargetStream streamWithBlock:target]]]]];
+    return fetcher;
+}
+
+-(void)sendFetchedQuestionsFor:(NSString*)tag to:(TargetBlock)target
+{
+    [[self streamSendingTo:target] writeObject:[self createRelativeURLWithTag:tag]];
+}
+
+
 
 - (RACSignal *)fetchQuestionsWithTag:(NSString *)tag
 {
