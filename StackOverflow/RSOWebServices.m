@@ -53,21 +53,31 @@ NSInteger const RSOErrorCode = -42;
     return [self sharedServices];
 }
 
--(MPWStream*)streamSendingTo:(TargetBlock)target
+-(MPWStream*)streamSendingTo_worker:(TargetBlock)target
 {
     MPWURLFetchStream *fetcher;
     
-    fetcher=[MPWURLFetchStream streamWithBaseURL:[self baseUrl] target:
-             [MPWConvertFromJSONStream streamWithKey:@"items" target:
-              [MPWDict2ObjStream streamWithClass:[RSOQuestion class] selector:@selector(questionForDictionary:) target:
-               [MPWThreadSwitchStream streamWithTarget:
-                [MPWBlockTargetStream streamWithBlock:target]]]]];
+    fetcher=[[[[[MPWURLFetchStream streamWithBaseURL:[self baseUrl] target:nil]
+             parseJSONWithKey:@"items" ]
+             dict2objWithClass:[RSOQuestion class]]
+             onMainThreadStream]
+             onBlock:target];
+
+    
     return fetcher;
 }
 
+-(MPWStream*)streamSendingTo:(TargetBlock)target
+{
+    return [self streamSendingTo_worker:target];
+}
+
+
 -(void)sendFetchedQuestionsFor:(NSString*)tag to:(TargetBlock)target
 {
-    [[self streamSendingTo:target] writeObject:[self createRelativeURLWithTag:tag]];
+    @autoreleasepool {
+        [[self streamSendingTo:target] writeObject:[self createRelativeURLWithTag:tag]];
+    }
 }
 
 

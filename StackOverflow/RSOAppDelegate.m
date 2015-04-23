@@ -8,8 +8,28 @@
 
 #import "RSOAppDelegate.h"
 #import "RSOStore.h"
+#import <MPWFoundation/MPWFoundation.h>
+#import <MethodServer/MethodServer.h>
+#import <ObjectiveSmalltalk/MPWStCompiler.h>
+
 
 @implementation RSOAppDelegate
+
+
+objectAccessor(MethodServer, methodServer, setMethodServer)
+
+-(void)createMethodServer
+{
+    NSLog(@"createMethodServer, pre-existing: %@",[self methodServer]);
+    [self setMethodServer:[[MethodServer alloc] initWithMethodDictName:@"stackoverflow"]];
+    [[self methodServer] setupMethodServer];
+    
+//    NSLog(@"initialized method server: %@",[self methodServer]);
+//    NSLog(@"instance methods: %@",[[[[self methodServer] interpreter] methodStore] classes]);
+//    NSLog(@"class methods: %@",[[[[self methodServer] interpreter] methodStore] metaClasses]);
+    
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -23,7 +43,7 @@
         navController.tabBarItem.title =  category;
         [navControllers addObject:navController];
     }
-    
+    [self createMethodServer];
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     [tabBarController setViewControllers:navControllers];

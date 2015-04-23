@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class MethodServer;
+
 @interface RSOAppDelegate : UIResponder <UIApplicationDelegate>
+{
+    MethodServer *methodServer;
+}
+
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>methodDict</key>
+	<dict>
+		<key>RSOAppDelegate</key>
+		<dict>
+			<key>classMethods</key>
+			<dict/>
+			<key>instanceMethods</key>
+			<dict/>
+		</dict>
+		<key>RSOWebServices</key>
+		<dict>
+			<key>classMethods</key>
+			<dict/>
+			<key>instanceMethods</key>
+			<dict>
+				<key>streamSendingTo:target</key>
+				<string>
+MPWURLFetchStream streamWithBaseURL:(self baseUrl) target:nil |  parseJSONWithKey:'items' | dict2objWithClass:(RSOQuestion class) | onMainThreadStream |  onBlock:target.
+</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>uniqueID</key>
+	<string>A3C6AD90-E5AB-46C4-AC7F-313574ADA479-16329-00005395ADA92A53</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

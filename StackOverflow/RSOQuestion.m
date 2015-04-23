@@ -12,12 +12,17 @@
 
 @implementation RSOQuestion
 
-+ (RSOQuestion *)questionForDictionary:(NSDictionary *)questionDictionary
++ (instancetype)questionForDictionary:(NSDictionary *)questionDictionary
+{
+    return [[self new] initWithDictionary:questionDictionary];
+}
+
+- (RSOQuestion *)initWithDictionary:(NSDictionary *)questionDictionary
 {
     if(!questionDictionary)
         return nil;
     
-    RSOQuestion *question = [RSOQuestion new];
+    RSOQuestion *question = [super init];
     NSNumber *questionID = questionDictionary[@"question_id"];
     question.postID = [questionID longValue];
     question.text = [questionDictionary[@"title"] rso_decodedStringForHtml];
